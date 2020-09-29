@@ -1,8 +1,13 @@
+dir = File.expand_path(__dir__)
+require File.join(dir, 'request')
+require File.join(dir, 'response')
 require 'socket' # Access TCPServer and TCPSocket
+require 'uri'
+require 'pry'
 
 # Initialize TCPServer object that will listen to 80 port on localhost
 server = TCPServer.new('localhost', 2345)
-
+puts "Starting the Server..................."
 # process incoming connection in a loop
 while client = server.accept
 
@@ -11,15 +16,11 @@ while client = server.accept
 
   # Log the request to console for debugging purpose
   STDERR.puts(request)
+  request = Request.new.parse(request)
+  response = Response.create_response(request)
 
-  response = "This is HTTP server built with Ruby."
+  puts "#{client.peeraddr[3]} #{request.fetch(:path)} - #{response.response_code}"
 
-  client.print "HTTP/1.1 200\r\n"
-  client.print "Content-Type: text/html\r\n"
-  client.print "Content-Length: #{response.bytesize}\r\n"
-
-  client.print "\r\n"
-  client.print response
-  client.print "\r\n"
+  response.send(client)
   client.close
 end
