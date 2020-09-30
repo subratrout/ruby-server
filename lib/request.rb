@@ -12,6 +12,8 @@ class Request
     headers = {}
     
     request.lines[1..-1].each do |line|
+      return headers if line == "\r\n"
+      
       header, val = line.split
       header = standardize(header)
       heqaders[header] = val 
