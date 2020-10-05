@@ -1,0 +1,11 @@
+
+Style/Encoding:
+  Enabled: false
+
+inherit_gem:
+  rubocop-shopify: rubocop.yml
+
+Layout/IndentationStyle:
+  Enabled: true
+Style/FrozenStringLiteralComment:
+  Enabled: false

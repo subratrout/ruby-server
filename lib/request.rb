@@ -7,18 +7,15 @@ class Request
       headers: parse_headers(request)
     }
   end
-  
+
   def parse_headers(request)
     headers = {}
-    
     request.lines[1..-1].each do |line|
       return headers if line == "\r\n"
-      
       header, val = line.split
       header = standardize(header)
-      heqaders[header] = val 
+      headers[header] = val
     end
-    
   end
 
   def standardize(header)

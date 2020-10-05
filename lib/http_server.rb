@@ -7,10 +7,11 @@ require 'uri'
 require 'pry'
 
 # Initialize TCPServer object that will listen to 80 port on localhost
-server = TCPServer.new('localhost', 2345)
+server = TCPServer.new('localhost', 8080)
 puts "Starting the Server..................."
 # process incoming connection in a loop
-while client = server.accept
+loop do
+  client = server.accept
 
   # Read the first request line
   request = client.gets
@@ -21,8 +22,8 @@ while client = server.accept
   request = Request.new.parse(request)
   response = ResponseBuilder.new.create_response(request)
 
-  puts "What is this printing.....#{client.peeraddr[3]} #{request.fetch(:path)} - #{response.response_code}"
-  puts "What is this also .... #{client.peeraddr(true)[2]}"
+  puts "#{client.peeraddr[3]} #{request.fetch(:path)} - #{response.response_code}"
+  puts "Locate IP: #{client.peeraddr(true)[2]}"
   response.send(client)
   client.close
 end
